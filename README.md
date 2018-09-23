@@ -1,9 +1,9 @@
 # Lightweight C# Json parser and programming model
-If your task is to parse json whose structure is known ahead of time, a few helper functions may do the trick. For instance
+If your task is to parse json whose structure is known ahead of time, a few "quick and dirty" helper functions may do the trick. For instance
 
-    static string QuickAndDirtyJsonLookupText(string json, string key) =>
-        QuickAndDirtyJsonFind(json, key).Split('"')[1];
-    static string QuickAndDirtyJsonFind(string json, string key) {
+    static string JsonLookupText(string json, string key) =>
+        JsonFind(json, key).Split('"')[1];
+    static string JsonFind(string json, string key) {
         int keyIndex = json.IndexOf($"\"{key}\":");
         if (keyIndex < 0)
             throw new KeyNotFoundException($"Key \"{key}\" not found in '{json}'.");
@@ -22,13 +22,13 @@ lets you find objects within objects and look up simple text values. Given
 you can
 
     const string json = "{ \"name\": \"Dbquity\", <... as above ...> }"; 
-    Assert.AreEqual("Dbquity", QuickAndDirtyJsonLookupText(json, "name"));
-    string engineer = QuickAndDirtyJsonFind(json, "engineer");
-    Assert.AreEqual("Lars", QuickAndDirtyJsonLookupText(engineer, "name"));
-    Assert.AreEqual("Frederiksberg", QuickAndDirtyJsonLookupText(json, "homeTown"));
+    Assert.AreEqual("Dbquity", JsonLookupText(json, "name"));
+    string engineer = JsonFind(json, "engineer");
+    Assert.AreEqual("Lars", JsonLookupText(engineer, "name"));
+    Assert.AreEqual("Frederiksberg", JsonLookupText(json, "homeTown"));
 
 However, you'll often want to approach problems in a manner that is a little bit more structured, and that is what this project tries to do.
-* It includes a C# object model for representing json, in which you find `Object`, `Array`, `Text`, `Number`, `Bool`, `Null` types that all inherit from `JsonValue`.
+* It includes a C# object model for representing json, in which you find `JsonObject`, `JsonArray`, `JsonText`, `JsonNumber`, `JsonBool`, `JsonNull` types that all inherit from `JsonValue`.
 * It supports parsing a string into this representation as well as `ToString`ing to a dense textual representation and `Format`ting with line breaks and indentation.
 * Finally it allows for conversion to and from user defined C# objects - subject to certain restrictions.
 
