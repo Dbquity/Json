@@ -68,9 +68,11 @@ namespace Dbquity.Test {
         }
         [TestMethod]
         public void ParseOneDriveJsonExample() {
-            JsonObject childrenOfRoot = JsonObject.Parse(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OneDriveJsonExample.txt")));
+            JsonObject childrenOfRoot =
+                JsonObject.Parse(File.ReadAllText(Path.Combine(Environment.CurrentDirectory, "OneDriveJsonExample.txt")));
             JsonArray children = childrenOfRoot["value"].Array;
             Assert.AreEqual<string>("Contoso Finance Dashboard", childrenOfRoot["value"][2]["name"]);
+            Assert.AreEqual<int>(40320, children.Last()["size"]);
         }
     }
 }
