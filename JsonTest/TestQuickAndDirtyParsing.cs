@@ -13,7 +13,27 @@ namespace Dbquity.Test {
         return json.Substring(keyIndex + 3 + key.Length).TrimStart();
     }
         [TestMethod]
-        public void SampleFromAliceOnStackOverflow() {
+        public void ExampleForReadme() {
+            const string json =
+                "{\r\n" +
+                "    \"name\": \"Dbquity\",\r\n" +
+                "    \"established\": 2018,\r\n" +
+                "    \"primes\": [ 1, 2, 3, 5, 7, 11, 13, 17, 19 ],\r\n" +
+                "    \"engineer\": { \"name\": \"Lars\", \"homeTown\": \"Frederiksberg\" }\r\n" +
+                "}";
+            Assert.AreEqual("Dbquity", QuickAndDirtyJsonLookupText(json, "name"));
+            string engineer = QuickAndDirtyJsonFind(json, "engineer");
+            Assert.AreEqual("Lars", QuickAndDirtyJsonLookupText(engineer, "name"));
+            Assert.AreEqual("Frederiksberg", QuickAndDirtyJsonLookupText(json, "homeTown"));
+
+            JsonObject dbquity = JsonObject.Parse(json);
+            Assert.AreEqual<string>("Dbquity", dbquity["name"]);
+            Assert.AreEqual<string>("Lars", dbquity["engineer"]["name"]);
+            Assert.AreEqual<int>(7, dbquity["primes"][4]);
+            Assert.AreEqual(9, dbquity["primes"].Array.Count);
+        }
+        [TestMethod]
+        public void ExampleFromAliceOnStackOverflow() {
             const string json =
                 "{"+
                 "  \"User\":{" +
