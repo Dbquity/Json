@@ -11,8 +11,10 @@ namespace Dbquity {
         public T FromJson<T>() => (T)FromJson(typeof(T));
         public object FromJson(Type type) => FromJson(type, new HashSet<(MemberInfo, object)>());
         internal object FromJson(Type type, HashSet<(MemberInfo, object)> visited) {
-            switch ((object)this) {
+            switch (this) {
                 case JsonNull n:
+                    if (type == typeof(Guid))
+                        return default(Guid);
                     return null;
                 case JsonObject o:
                     return o.FromJson(type, visited);
@@ -41,6 +43,7 @@ namespace Dbquity {
                     if (type == typeof(char)) return char.Parse(t.Value);
                     if (type == typeof(TimeSpan)) return TimeSpan.Parse(t.Value, CultureInfo.InvariantCulture);
                     if (type == typeof(DateTime)) return DateTime.Parse(t.Value, CultureInfo.InvariantCulture);
+                    if (type == typeof(Guid)) return Guid.Parse(t.Value);
                     if (type == typeof(Version)) return Version.Parse(t.Value);
                     if (type == typeof(Type)) return Type.GetType(t.Value);
                     if (type == typeof(string)) return t.Value;

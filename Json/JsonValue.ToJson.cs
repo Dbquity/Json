@@ -7,11 +7,15 @@ using System.Reflection;
 using System.Text;
 
 namespace Dbquity {
+    public static class ObjectJsonExtensions {
+        public static JsonValue ToJson(this object value) => JsonValue.ToJson(value);
+    }
     partial class JsonValue {
         public static JsonValue ToJson(object value) =>
             ToJson(value, new Dictionary<object, JsonValue>());
         static JsonValue ToJson(object value, Dictionary<object, JsonValue> visited) {
             switch (value) {
+                case null: return JsonNull.Instance;
                 case bool b: return new JsonBool(b);
                 case byte b: return new JsonNumber(b);
                 case int i: return new JsonNumber(i);
@@ -21,7 +25,15 @@ namespace Dbquity {
                 case decimal d: return new JsonNumber(d);
                 case float f: return new JsonNumber(f);
                 case double d: return new JsonNumber(d);
+                case Guid g:
+                    if (g == default)
+                        return JsonNull.Instance;
+                    else
+                        return new JsonText(g.ToString());
                 case DateTime d: return new JsonText(d.ToString(CultureInfo.InvariantCulture));
+                case TimeSpan t: return new JsonText(t.ToString());
+                case Version v: return new JsonText(v.ToString());
+                case Type tp: return new JsonText(tp.AssemblyQualifiedName);
                 case char c: return new JsonText(c);
                 case string s: return new JsonText(s);
                 case IEnumerable ie:
@@ -36,8 +48,8 @@ namespace Dbquity {
             if (info.IsClass || info.IsValueType) {
                 IEnumerable<MemberInfo> mis = GetPropertiesAndFields(info);
                 if (mis.Any())
-                    return Visit(() => new JsonObject(mis.Select(mi => (mi.Name, ToJson(GetValue(mi), visited)))));
-
+                    return Visit(() => new JsonObject(mis.Select(mi => (mi.Name, ToJson(GetValue(mi), visited))).
+                        Where(kv => kv.Item2 != JsonNull.Instance)));
                 object GetValue(MemberInfo mi) {
                     if (mi is PropertyInfo pi)
                         return pi.GetValue(value);
