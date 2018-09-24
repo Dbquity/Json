@@ -12,17 +12,17 @@
         public static implicit operator JsonValue(ulong ul) => new JsonNumber(ul);
         public static implicit operator JsonValue(decimal d) => new JsonNumber(d);
         public static implicit operator JsonValue(float f) => new JsonNumber(f);
-        public static implicit operator JsonValue(double d) => new JsonNumber(d);        
-        public static implicit operator string(JsonValue value) => value.Text.Value;
-        public static implicit operator bool(JsonValue value) => value.Bool.Value;
-        public static implicit operator byte(JsonValue value) => value.Number.Byte;
-        public static implicit operator sbyte(JsonValue value) => value.Number.SByte;
-        public static implicit operator int(JsonValue value) => value.Number.Int;
-        public static implicit operator uint(JsonValue value) => value.Number.UInt;
-        public static implicit operator long(JsonValue value) => value.Number.Long;
-        public static implicit operator ulong(JsonValue value) => value.Number.ULong;
-        public static implicit operator decimal(JsonValue value) => value.Number.Decimal;
-        public static implicit operator float(JsonValue value) => value.Number.Float;
-        public static implicit operator double(JsonValue value) => value.Number.Double;
+        public static implicit operator JsonValue(double d) => new JsonNumber(d);
+        public static implicit operator string(JsonValue value) => value?.Text?.Value;
+        public static implicit operator bool(JsonValue value) => value?.Bool.Value ?? default;
+        public static implicit operator byte(JsonValue value) => value?.Number.Byte ?? default;
+        public static implicit operator sbyte(JsonValue value) => value?.Number.SByte ?? default;
+        public static implicit operator int(JsonValue value) => value?.Number.Int ?? default;
+        public static implicit operator uint(JsonValue value) => value?.Number.UInt ?? default;
+        public static implicit operator long(JsonValue value) => value?.Number.Long ?? default;
+        public static implicit operator ulong(JsonValue value) => value?.Number.ULong ?? default;
+        public static implicit operator decimal(JsonValue value) => value?.Number.Decimal ?? default;
+        public static implicit operator float(JsonValue value) => value?.Number.Float ?? default;
+        public static implicit operator double(JsonValue value) => value?.Number.Double ?? default;
     }
 }

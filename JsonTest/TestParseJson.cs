@@ -65,6 +65,8 @@ namespace Dbquity.Test {
             string arrayText = a.ToString();
             Assert.AreEqual(JsonValue.Parse(arrayText).Format(), a.Format());
             Assert.AreEqual(100, 2 * a[1]["age"]);
+            if (o["name"] != "Lars")
+                throw new InvalidProgramException();
         }
         [TestMethod]
         public void ParseOneDriveJsonExample() {

@@ -56,6 +56,7 @@
     <Compile Include="TestParseJson.cs" />
     <Compile Include="TestToAndFromJson.cs" />
     <Compile Include="TestQuickAndDirtyParsing.cs" />
+    <Compile Include="TestNull.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Json\Json.csproj">

@@ -87,7 +87,7 @@
         public override string ToString() => Value ? "true" : "false";
         public override bool Equals(object obj) => obj is JsonBool b && Value.Equals(b.Value);
         public override int GetHashCode() => Value.GetHashCode();
-        public static implicit operator bool(JsonBool b) => b.Value;
+        public static implicit operator bool(JsonBool b) => b?.Value ?? default;
         public static implicit operator JsonBool(bool b) => new JsonBool { Value = b };
     }
     public sealed class JsonNull : JsonValue {
@@ -122,15 +122,15 @@
         public override string ToString() => String;
         public override bool Equals(object obj) => obj is JsonNumber n && String.Equals(n.String);
         public override int GetHashCode() => String.GetHashCode();
-        public static implicit operator byte(JsonNumber b) => b.Byte;
-        public static implicit operator sbyte(JsonNumber sb) => sb.SByte;
-        public static implicit operator int(JsonNumber i) => i.Int;
-        public static implicit operator uint(JsonNumber ui) => ui.Byte;
-        public static implicit operator long(JsonNumber l) => l.Long;
-        public static implicit operator ulong(JsonNumber ul) => ul.ULong;
-        public static implicit operator decimal(JsonNumber d) => d.Decimal;
-        public static implicit operator float(JsonNumber bf) => bf.Float;
-        public static implicit operator double(JsonNumber d) => d.Double;
+        public static implicit operator byte(JsonNumber b) => b?.Byte ?? default;
+        public static implicit operator sbyte(JsonNumber sb) => sb?.SByte ?? default;
+        public static implicit operator int(JsonNumber i) => i?.Int ?? default;
+        public static implicit operator uint(JsonNumber ui) => ui?.Byte ?? default;
+        public static implicit operator long(JsonNumber l) => l?.Long ?? default;
+        public static implicit operator ulong(JsonNumber ul) => ul?.ULong ?? default;
+        public static implicit operator decimal(JsonNumber d) => d?.Decimal ?? default;
+        public static implicit operator float(JsonNumber bf) => bf?.Float ?? default;
+        public static implicit operator double(JsonNumber d) => d?.Double ?? default;
         public static implicit operator JsonNumber(byte b) => new JsonNumber(b);
         public static implicit operator JsonNumber(sbyte sb) => new JsonNumber(sb);
         public static implicit operator JsonNumber(int i) => new JsonNumber(i);
