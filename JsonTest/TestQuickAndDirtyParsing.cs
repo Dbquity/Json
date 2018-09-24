@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dbquity.Test {
@@ -17,8 +18,8 @@ namespace Dbquity.Test {
             const string json =
                 "{\r\n" +
                 "    \"name\": \"Dbquity\",\r\n" +
-                "    \"established\": 2018,\r\n" +
-                "    \"primes\": [ 1, 2, 3, 5, 7, 11, 13, 17, 19 ],\r\n" +
+                "    \"established\": 2016,\r\n" +
+                "    \"primes\": [ 1, 2, 3, 5, 7, 11 ],\r\n" +
                 "    \"engineer\": { \"name\": \"Lars\", \"homeTown\": \"Frederiksberg\" }\r\n" +
                 "}";
             Assert.AreEqual("Dbquity", QuickAndDirtyJsonLookupText(json, "name"));
@@ -30,7 +31,8 @@ namespace Dbquity.Test {
             Assert.AreEqual<string>("Dbquity", dbquity["name"]);
             Assert.AreEqual<string>("Lars", dbquity["engineer"]["name"]);
             Assert.AreEqual<int>(7, dbquity["primes"][4]);
-            Assert.AreEqual(9, dbquity["primes"].Array.Count);
+            Assert.AreEqual(6, dbquity["primes"].Array.Count);
+            Clipboard.SetData(DataFormats.Text, dbquity.Format());
         }
         [TestMethod]
         public void ExampleFromAliceOnStackOverflow() {

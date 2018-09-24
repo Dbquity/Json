@@ -19,8 +19,8 @@ Given
 ```json
 {
     "name": "Dbquity",
-    "established": 2018,
-    "primes": [ 1, 2, 3, 5, 7, 11, 13, 17, 19 ],
+    "established": 2016,
+    "primes": [ 1, 2, 3, 5, 7, 11 ],
     "engineer": { "name": "Lars", "homeTown": "Frederiksberg" }
 }
 ```
@@ -47,8 +47,29 @@ JsonObject dbquity = JsonObject.Parse(json);
 Assert.AreEqual<string>("Dbquity", dbquity["name"]);
 Assert.AreEqual<string>("Lars", dbquity["engineer"]["name"]);
 Assert.AreEqual<int>(7, dbquity["primes"][4]);
-Assert.AreEqual(9, dbquity["primes"].Array.Count);
+Assert.AreEqual(6, dbquity["primes"].Array.Count);
+Clipboard.SetData(DataFormats.Text, dbquity.Format());
 ```
+
+Where the last line formats the json onto the clipboard like this:
+
+```json
+{
+    "name": "Dbquity",
+    "established": 2016,
+    "primes": [
+        1,
+        2,
+        3,
+        5,
+        7,
+        11
+    ],
+    "engineer": {
+        "name": "Lars",
+        "homeTown": "Frederiksberg"
+    }
+}}```
 
 This json implementation is used when handling RESTful interaction with internet based storage services in the [Dbquity](http://Dbquity.com) platform.
 
