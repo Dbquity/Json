@@ -69,7 +69,8 @@ Where the last line formats the json onto the clipboard like this:
         "name": "Lars",
         "homeTown": "Frederiksberg"
     }
-}}```
+}
+```
 
 This json implementation is used when handling RESTful interaction with internet based storage services in the [Dbquity](http://Dbquity.com) platform.
 
