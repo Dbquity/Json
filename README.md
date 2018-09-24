@@ -75,3 +75,6 @@ Where the last line formats the json onto the clipboard like this:
 This json implementation is used when handling RESTful interaction with internet based storage services in the [Dbquity](http://Dbquity.com) platform.
 
 The whole thing is kept as minimal as possible to the author who would very much welcome any input :-)
+
+Note that the handling of escapes such as encoded unicode characters in string values is not, yet, working completely as specified at http://json.org.
+Please do raise an issue, if you find something specific that you need fixed.
