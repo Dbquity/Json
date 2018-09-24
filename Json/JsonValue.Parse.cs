@@ -36,17 +36,17 @@ namespace Dbquity {
                     case ':': return Colon;
                     case ',': return Comma;
                     case 't':
-                        if (!text.Substring(index).StartsWith("rue"))
+                        if (string.Compare(text, index, nameof(True), 1, nameof(True).Length - 1) != 0)
                             throw NewAE($"Unknown token t{text.Substring(index).Split(' ', '\t', '\r', '\n')[0]}");
                         index += 3;
                         return True;
                     case 'f':
-                        if (!text.Substring(index).StartsWith("alse"))
+                        if (string.Compare(text, index, nameof(False), 1, nameof(False).Length - 1) != 0)
                             throw NewAE($"Unknown token f{text.Substring(index).Split(' ', '\t', '\r', '\n')[0]}");
                         index += 4;
                         return False;
                     case 'n':
-                        if (!text.Substring(index).StartsWith("ull"))
+                        if (string.Compare(text, index, nameof(Null), 1, nameof(Null).Length - 1) != 0)
                             throw NewAE($"Unknown token n{text.Substring(index).Split(' ', '\t', '\r', '\n')[0]}");
                         index += 3;
                         return Tokens.Null;
