@@ -47,8 +47,11 @@ namespace Dbquity {
             TypeInfo info = type.GetTypeInfo();
             if (info.IsClass || info.IsValueType) {
                 IEnumerable<MemberInfo> mis = GetPropertiesAndFields(info);
+                Func<MemberInfo, string> getName = type.IsSealed && type.Name.Contains(">f__AnonymousType") ?
+                    mi => mi.Name.Substring(1, mi.Name.Length - "<>i__Field".Length) :
+                    (Func<MemberInfo, string>)(mi => mi.Name);
                 if (mis.Any())
-                    return Visit(() => new JsonObject(mis.Select(mi => (mi.Name, ToJson(GetValue(mi), visited))).
+                    return Visit(() => new JsonObject(mis.Select(mi => (getName(mi), ToJson(GetValue(mi), visited))).
                         Where(kv => kv.Item2 != JsonNull.Instance)));
                 object GetValue(MemberInfo mi) {
                     if (mi is PropertyInfo pi)
