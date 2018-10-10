@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dbquity.Test {
     [TestClass]
@@ -46,11 +47,24 @@ namespace Dbquity.Test {
         }
         [TestMethod]
         public void AnonymousTypeToJson() {
-            JsonValue json = new { link = "http://www.bbc.co.uk", show = "Teletubbies", stats = new { year = 2017, viewers = 23456789 } }.ToJson();
+            JsonValue json =
+                new {
+                    link = "http://www.bbc.co.uk",
+                    show = "Teletubbies",
+                    stats = new { year = 2017, viewers = 23456789 }
+                }.ToJson();
             Assert.AreEqual<string>("http://www.bbc.co.uk", json["link"]);
             Assert.AreEqual<string>("Teletubbies", json["show"]);
             Assert.AreEqual(@"{""year"":2017,""viewers"":23456789}", json["stats"].ToString());
             Assert.AreEqual<int>(2017, json["stats"]["year"]);
+            var point = new { x = 3, y = 89 };
+            Assert.AreEqual(@"{""x"":3,""y"":89}", point.ToJsonString());
+            string formattedJson =
+                @"{\" +
+                @"    ""x"": 3,\" +
+                @"    ""y"": 89\" +
+                @"}";
+            Assert.AreEqual(formattedJson.Replace(@"\", Environment.NewLine), point.FormatJson());
         }
     }
 }

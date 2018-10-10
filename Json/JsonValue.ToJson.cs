@@ -8,9 +8,13 @@ using System.Text;
 
 namespace Dbquity {
     public static class ObjectJsonExtensions {
+        public static string FormatJson(this object value) => JsonValue.FormatJson(value);
+        public static string ToJsonString(this object value) => JsonValue.ToJsonString(value);
         public static JsonValue ToJson(this object value) => JsonValue.ToJson(value);
     }
     partial class JsonValue {
+        public static string FormatJson(object value) => ToJson(value).Format();
+        public static string ToJsonString(object value) => ToJson(value).ToString();
         public static JsonValue ToJson(object value) =>
             ToJson(value, new Dictionary<object, JsonValue>());
         static JsonValue ToJson(object value, Dictionary<object, JsonValue> visited) {
