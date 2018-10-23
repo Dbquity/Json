@@ -2,14 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Dbquity {
     partial class JsonValue {
-        public T FromJson<T>() => (T)FromJson(typeof(T));
-        public object FromJson(Type type) => FromJson(type, new HashSet<(MemberInfo, object)>());
         internal object FromJson(Type type, HashSet<(MemberInfo, object)> visited) {
             switch (this) {
                 case JsonNull n:
@@ -51,35 +47,6 @@ namespace Dbquity {
                     break;
             }
             throw new NotSupportedException();
-        }
-    }
-    partial class JsonObject {
-        public T FromJson<T>(params object[] ctorArgs) => (T)FromJson(typeof(T), new HashSet<(MemberInfo, object)>(), ctorArgs);
-        internal object FromJson(Type type, HashSet<(MemberInfo, object)> visited, params object[] ctorArgs) {
-            object obj = Activator.CreateInstance(type, ctorArgs);
-            if (Properties.Any()) {
-                Dictionary<string, MemberInfo> members = new Dictionary<string, MemberInfo>();
-                foreach (MemberInfo mi in GetPropertiesAndFields(obj.GetType().GetTypeInfo()))
-                    members.Add(mi.Name, mi);
-                foreach (var kv in Properties)
-                    SetValue(kv.Key, kv.Value);
-
-                void SetValue(string name, JsonValue json) {
-                    MemberInfo mi = members[name];
-                    if (json is JsonArray || json is JsonObject) {
-                        if (visited.Contains((mi, obj)))
-                            return;
-                        visited.Add((mi, obj));
-                    }
-                    if (mi is PropertyInfo pi2)
-                        pi2.SetValue(obj, json.FromJson(pi2.PropertyType, visited));
-                    else if (mi is FieldInfo fi2)
-                        fi2.SetValue(obj, json.FromJson(fi2.FieldType, visited));
-                    else
-                        throw new InvalidProgramException();
-                }
-            }
-            return obj;
         }
     }
 }

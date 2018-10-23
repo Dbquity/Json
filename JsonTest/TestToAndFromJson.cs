@@ -64,7 +64,7 @@ namespace Dbquity.Test {
                 @"    ""x"": 3,\" +
                 @"    ""y"": 89\" +
                 @"}";
-            Assert.AreEqual(formattedJson.Replace(@"\", Environment.NewLine), point.FormatJson());
+            Assert.AreEqual(formattedJson.Replace(@"\", Environment.NewLine), point.ToFormattedJson());
         }
         class OnlyIndexers {
             public int this[int i] => i;

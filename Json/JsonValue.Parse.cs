@@ -3,6 +3,8 @@
 namespace Dbquity {
     using static JsonValue.Tokens;
     partial class JsonValue {
+        internal JsonValue() { }
+        internal static string NewLine(int indent) => Environment.NewLine + string.Empty.PadRight(indent * 4);
         internal enum Tokens { BeginObject, EndObject, BeginArray, EndArray, Colon, Comma, Text, True, False, Null, Number };
         private static (JsonValue value, int index) Parse(string text, int index) {
             int beginLiteral = 0, endLiteral = 0;
