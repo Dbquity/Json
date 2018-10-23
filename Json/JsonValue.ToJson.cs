@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 
 namespace Dbquity {
     public static class ObjectJsonExtensions {
@@ -19,6 +18,7 @@ namespace Dbquity {
             ToJson(value, new Dictionary<object, JsonValue>());
         static JsonValue ToJson(object value, Dictionary<object, JsonValue> visited) {
             switch (value) {
+                case JsonValue j: return j;
                 case null: return JsonNull.Instance;
                 case bool b: return new JsonBool(b);
                 case byte b: return new JsonNumber(b);
@@ -81,7 +81,8 @@ namespace Dbquity {
                 foreach (MemberInfo mi in GetPropertiesAndFields(b.GetTypeInfo()))
                     yield return mi;
                 foreach (MemberInfo mi in ti.DeclaredMembers)
-                    if (mi is PropertyInfo pi && !(pi.GetMethod?.IsStatic ?? true) && pi.CanRead && pi.CanWrite)
+                    if (mi is PropertyInfo pi &&
+                        !(pi.GetMethod?.IsStatic ?? true) && pi.CanRead && pi.CanWrite && pi.GetIndexParameters().Length == 0)
                         yield return mi;
                     else if (mi is FieldInfo fi && !fi.IsStatic && !fi.Name.EndsWith(">k__BackingField"))
                         yield return mi;

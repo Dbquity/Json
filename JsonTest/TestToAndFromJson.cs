@@ -66,5 +66,25 @@ namespace Dbquity.Test {
                 @"}";
             Assert.AreEqual(formattedJson.Replace(@"\", Environment.NewLine), point.FormatJson());
         }
+        class OnlyIndexers {
+            public int this[int i] => i;
+            public string this[string s] => s;
+        }
+        class WithIndexers : OnlyIndexers {
+            public string Name = nameof(WithIndexers);
+        }
+        [TestMethod]
+        public void Indexer() {
+            Assert.AreEqual("Cannot create Json from the type, 'System.Object'",
+                Assert.ThrowsException<NotSupportedException>(() => new object().ToJson()).Message);
+            Assert.AreEqual("Cannot create Json from the type, 'Dbquity.Test.TestToAndFromJson+OnlyIndexers'",
+                Assert.ThrowsException<NotSupportedException>(() => new OnlyIndexers().ToJson()).Message);
+            Assert.AreEqual(@"{""Name"":""WithIndexers""}", new WithIndexers().ToJsonString());
+        }
+        [TestMethod]
+        public void JsonToJson() {
+            JsonValue json = new WithIndexers().ToJson();
+            Assert.AreSame(json, json.ToJson());
+        }
     }
 }
