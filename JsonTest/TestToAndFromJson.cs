@@ -86,5 +86,21 @@ namespace Dbquity.Test {
             JsonValue json = new WithIndexers().ToJson();
             Assert.AreSame(json, json.ToJson());
         }
+        [TestMethod]
+        public void UnicodeText() {
+            // see https://www.dropbox.com/developers/reference/json-encoding
+            string text = "\"some_üñîcødé_and_\x7f\"";
+            JsonText jsonText = JsonText.Parse(text);
+            Assert.AreEqual(@"some_\u00fc\u00f1\u00eec\u00f8d\u00e9_and_\u007f", jsonText.Value);
+            Assert.AreEqual(text.Trim('\"'), jsonText.FromJson<string>());
+            text = "\"Welcome 🤗 to a link🔗\"";
+            jsonText = JsonText.Parse(text);
+            Assert.AreEqual(@"Welcome \ud83e\udd17 to a link\ud83d\udd17", jsonText.Value);
+            Assert.AreEqual(text.Trim('\"'), jsonText.FromJson<string>());
+            text = "\"More than\rone line.\nThree in fact!\r\nNo four :-)\"";
+            jsonText = JsonText.Parse(text);
+            Assert.AreEqual(@"More than\u000done line.\u000aThree in fact!\u000d\u000aNo four :-)", jsonText.Value);
+            Assert.AreEqual(text.Trim('\"'), jsonText.FromJson<string>());
+        }
     }
 }

@@ -22,13 +22,7 @@
         }
         public new JsonValue this[string propertyName] {
             get => Properties.TryGetValue(propertyName, out JsonValue v) ? v : null;
-            set {
-                try {
-                    Properties[propertyName] = value;
-                } catch (ArgumentOutOfRangeException) {
-                    Properties.Add(propertyName, value);
-                }
-            }
+            set => Properties[propertyName] = value;
         }
         public bool Has(string propertyName) => Properties.ContainsKey(propertyName);
         public void Add(params (string name, JsonValue value)[] properties) => Add((IEnumerable<(string, JsonValue)>)properties);

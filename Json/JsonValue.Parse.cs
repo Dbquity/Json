@@ -107,7 +107,8 @@ namespace Dbquity {
                     case Tokens.Number:
                         return (new JsonNumber { String = text.Substring(beginLiteral, endLiteral - beginLiteral) }, index);
                     case Tokens.Text:
-                        return (new JsonText { Value = text.Substring(beginLiteral, endLiteral - beginLiteral) }, index);
+                        return (new JsonText {
+                            Value = JsonText.EncodeUnicode(text.Substring(beginLiteral, endLiteral - beginLiteral)) }, index);
                     case BeginObject:
                         JsonObject o = new JsonObject();
                         do {

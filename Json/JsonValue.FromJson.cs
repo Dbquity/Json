@@ -42,7 +42,7 @@ namespace Dbquity {
                     if (type == typeof(Guid)) return Guid.Parse(t.Value);
                     if (type == typeof(Version)) return Version.Parse(t.Value);
                     if (type == typeof(Type)) return Type.GetType(t.Value);
-                    if (type == typeof(string)) return t.Value;
+                    if (type == typeof(string)) return JsonText.DecodeUnicode(t.Value);
                     if (type.GetTypeInfo().IsEnum) return Enum.Parse(type, t.Value);
                     break;
             }
